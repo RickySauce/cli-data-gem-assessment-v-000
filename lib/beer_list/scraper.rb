@@ -54,9 +54,9 @@ class Scraper
   def create_beers
     self.create_sub_styles
     beer_list = []
+    # DONT FORGET TO TAKE THE DROP OUT BELOW
     SubStyle.all.each do |sub_style|
       beer_list.clear
-      binding.pry
         doc = Nokogiri::HTML(open("https://www.beeradvocate.com#{sub_style.url}?sort=avgD"))
         doc.css("tr").drop(3).each do |info|
           beer_list << {
@@ -69,9 +69,16 @@ class Scraper
             } unless info.css("td a b").text == ""
         end
         beer_list.reject! {|beer_hash| beer_hash[:ratings] < 100}
-        counter = 50
-        while beer_list.count < 20
-          doc = Nokogiri::HTML(open("https://www.beeradvocate.com#{sub_style.url}?sort=avgD&start=#{counter}"))
+        page_counter = 50
+        counter = 20
+        doc = Nokogiri::HTML(open("https://www.beeradvocate.com#{sub_style.url}?sort=revsD"))
+          ratings_array = []
+          doc.css("tr td b").drop(3).each do |ratings|
+            ratings_array << ratings.text.gsub(",","").to_i if ratings.text.gsub(",","").to_i > 99 && ratings.text.split("").count < 7
+          end
+          counter = ratings_array.count if ratings_array.count < counter
+        while beer_list.count < counter
+          doc = Nokogiri::HTML(open("https://www.beeradvocate.com#{sub_style.url}?sort=avgD&start=#{page_counter}"))
           doc.css("tr").drop(3).each do |info|
             beer_list << {
               :name => info.css("td a b").text,
@@ -83,7 +90,7 @@ class Scraper
               } unless info.css("td a b").text == ""
             end
             beer_list.reject! {|beer_hash| beer_hash[:ratings] < 100}
-            counter += 50
+            page_counter += 50
           end
           beer_list = beer_list[0..19]
           beer_list.each do |beer_hash|
@@ -102,13 +109,14 @@ class Scraper
             beer.add_attrs(attr_hash)
           end
     end
+    binding.pry
   end
 
-  #doc = Nokogiri::HTML(open("https://www.beeradvocate.com/beer/style/128/?sort=avgD&start=100"))
+  #doc = Nokogiri::HTML(open("https://www.beeradvocate.com/beer/style/128/?sort=avgD&start=1000"))
 
 
 end
 
 =begin
-
+if main reviews page at least 100 reviews less than 20 than counter is = that number
 =end

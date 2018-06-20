@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 #!/usr/bin/env bash
 set -euo pipefail
 IFS=$'\n\t'
 set -vx
+=======
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+>>>>>>> ac14863aa087d4c566745db2a439600977523f6b
 
 bundle install
 
