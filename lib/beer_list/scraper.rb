@@ -130,5 +130,89 @@ end
 
 =begin
   ------- ORIGINAL DEF CREATE_BEERS ------------------
+  def create_beers
+    self.create_sub_styles
+    beer_list = []
+    SubStyle.all.each do |sub_style|
+      beer_list.clear
+        doc = Nokogiri::HTML(open("https://www.beeradvocate.com#{sub_style.url}?sort=avgD"))
+        doc.css("tr").drop(3).each do |info|
+          beer_list << {
+            :name => info.css("td a b").text,
+            :url => info.css("td a").attribute('href').value,
+            :parent_style => sub_style.parent_style,
+            :ratings => info.css("td b").collect {|child| child.text.gsub(",","") if child == info.css("td b")[1]}.reject! {|text| text == nil}.join.to_i,
+            :score => info.css("td b").collect {|child| child.text if child == info.css("td b")[2]}.reject! {|text| text == nil}.join.to_f,
+            :abv => info.css("td span").text.to_f
+            } unless info.css("td a b").text == ""
+        end
+        beer_list.reject! {|beer_hash| beer_hash[:ratings] < 100}
+        page_counter = 50
+        counter = 20
+        doc = Nokogiri::HTML(open("https://www.beeradvocate.com#{sub_style.url}?sort=revsD"))
+          ratings_array = []
+          doc.css("tr td b").drop(3).each do |ratings|
+            ratings_array << ratings.text.gsub(",","").to_i if ratings.text.gsub(",","").to_i > 99 && ratings.text.split("").count < 7
+          end
+          ratings_array.pop if ratings_array.count > 1 && ratings_array[-1] > ratings_array[-2]
+          counter = ratings_array.count if ratings_array.count < counter
+        while beer_list.count < counter
+          doc = Nokogiri::HTML(open("https://www.beeradvocate.com#{sub_style.url}?sort=avgD&start=#{page_counter}"))
+          doc.css("tr").drop(3).each do |info|
+            beer_list << {
+              :name => info.css("td a b").text,
+              :url => info.css("td a").attribute('href').value,
+              :parent_style => sub_style.parent_style,
+              :ratings => info.css("td b").collect {|child| child.text.gsub(",","") if child == info.css("td b")[1]}.reject! {|text| text == nil}.join.to_i,
+              :score => info.css("td b").collect {|child| child.text if child == info.css("td b")[2]}.reject! {|text| text == nil}.join.to_f,
+              :abv => info.css("td span").text.to_f
+              } unless info.css("td a b").text == ""
+            end
+            beer_list.reject! {|beer_hash| beer_hash[:ratings] < 100}
+            page_counter += 50
+          end
+          beer_list = beer_list[0..19]
+          beer_list.each do |beer_hash|
+            sub_style.style_beers << Beer.new(beer_hash) unless Beer.all.any? {|beer| beer.name == beer_hash[:name]}
+          end
+            #REMOVED ADD ATTRS FOR NEW Beers
+    end
+    Beer.all.each {|beer| beer.parent_style.beers << beer}
+  end
   ---------------------------------------------------
+=end
+
+=begin
+  ------------ ORIGINAL DEF CREATE_SUB_STYLES -----------------
+  def create_sub_styles
+    self.create_parent_styles
+    #self.create_regions
+    sub_styles = []
+    self.get_style_page.css("table table").each do |info|
+      if info.css("span").text == "Ale Styles"
+        info.css("td a").each do |beer_style|
+          sub_styles << {
+            :name => beer_style.text,
+            :parent_style => ParentStyle.all.find {|style| style.name == "Ale"},
+            :url => beer_style.attribute('href').value
+          }
+        end
+      elsif info.css("span").text == "Lager Styles"
+        info.css("td a").each do |beer_style|
+          sub_styles << {
+            :name => beer_style.text,
+            :parent_style => ParentStyle.all.find {|style| style.name == "Lager"},
+            :url => beer_style.attribute('href').value
+          }
+        end
+      end
+    end
+     sub_styles.each do |style_hash|
+      SubStyle.new(style_hash) unless SubStyle.all.any? {|sub_style| sub_style.name == style_hash[:name]}
+    end
+    SubStyle.all.each do |sub_style|
+      sub_style.parent_style.sub_styles << sub_style
+    end
+  end
+  ------------------------------------------------------------
 =end

@@ -189,7 +189,7 @@ end
    def list_parent_style_beer_score(beer_list, choice)
      puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY BA-SCORE"
      beer_list.each_with_index do |beer, index|
-       puts "#{index + 1}. #{beer.name} - #{beer.score} - #{beer.abv} - #{beer.ratings}"
+       puts "#{index + 1}. #{beer.name}: #{beer.score}"
      end
    end
 
@@ -197,7 +197,7 @@ end
      list = beer_list.sort_by {|beer| beer.abv}.reverse
      puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY ABV"
      beer_list.each_with_index do |beer, index|
-       puts "#{index +1}. #{beer.name} #{beer.abv} %"
+       puts "#{index +1}. #{beer.name}: #{beer.abv}%"
      end
    end
 
@@ -205,7 +205,7 @@ end
      list = beer_list.sort_by {|beer| beer.ratings}.reverse
      puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY RATINGS"
      list.each_with_index do |beer, index|
-       puts "#{index +1}. #{beer.name} #{beer.ratings}"
+       puts "#{index +1}. #{beer.name}: #{beer.ratings}"
      end
    end
 
@@ -221,7 +221,7 @@ end
      list = choice.style_beers.sort_by {|beer| beer.score}.reverse
       puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY BA-SCORE"
      list.each_with_index do |beer, index|
-       puts "#{index + 1}. #{beer.name} - #{beer.score} - #{beer.abv} - #{beer.ratings}"
+       puts "#{index + 1}. #{beer.name}: #{beer.score}"
      end
    end
 
@@ -230,7 +230,7 @@ end
      list = choice.style_beers.sort_by {|beer| beer.abv}.reverse
      puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY ABV"
      list.each_with_index do |beer, index|
-       puts "#{index + 1}. #{beer.name} #{beer.abv}%"
+       puts "#{index + 1}. #{beer.name}: #{beer.abv}%"
      end
    end
 
@@ -239,7 +239,7 @@ end
      list = choice.style_beers.sort_by {|beer| beer.ratings}.reverse
      puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY ratings"
      list.each_with_index do |beer, index|
-       puts "#{index + 1}. #{beer.name} #{beer.ratings}"
+       puts "#{index + 1}. #{beer.name}: #{beer.ratings}"
      end
    end
 
@@ -254,7 +254,7 @@ end
     list = choice.style_beers.sort_by {|beer| beer.score}.reverse
     puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY BA-SCORE"
     list.each_with_index do |beer, index|
-      puts "#{index + 1}. #{beer.name} - #{beer.score} - #{beer.abv} - #{beer.ratings}"
+      puts "#{index + 1}. #{beer.name}: #{beer.score}"
     end
     puts ""
     puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTED SUB-STYLE" if list.count < 10
@@ -265,9 +265,9 @@ end
      list = choice.style_beers.sort_by {|beer| beer.abv}.reverse
      puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY ABV"
      list.each_with_index do |beer, index|
-       puts "#{index + 1}. #{beer.name} #{beer.abv}%"
+       puts "#{index + 1}. #{beer.name}: #{beer.abv}%"
      end
-     puts ""
+     puts
      puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTED SUB-STYLE" if list.count < 10
    end
 
@@ -276,7 +276,7 @@ end
      list = choice.style_beers.sort_by {|beer| beer.ratings}.reverse
      puts "SHOWING THE TOP 20 BEERS OF #{choice.name.upcase}'S SORTED BY TOTAL ratings"
      list.each_with_index do |beer, index|
-       puts "#{index + 1}. #{beer.name} #{beer.ratings}:"
+       puts "#{index + 1}. #{beer.name}: #{beer.ratings}"
      end
      puts
      puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTED SUB-STYLE" if list.count < 10
@@ -290,7 +290,7 @@ end
      puts "SHOWING THE TOP 20 BEERS IN THE WORLD SORTED BY BA-SCORE:"
      #beer_list = beer_list[0..19]
      beer_list.each_with_index do |beer, index|
-      puts "#{index + 1}. #{beer.name} #{beer.score}"
+      puts "#{index + 1}. #{beer.name}: #{beer.score}"
      end
    end
 
@@ -299,7 +299,7 @@ end
      puts "SHOWING THE TOP 20 BEERS IN THE WORLD SORTED BY ABV:"
      #beer_list = beer_list[0..19]
     list.each_with_index do |beer, index|
-      puts "#{index + 1}. #{beer.name} #{beer.abv}%"
+      puts "#{index + 1}. #{beer.name}: #{beer.abv}%"
      end
    end
 
@@ -307,8 +307,8 @@ end
      list = beer_list.sort_by {|beer| beer.ratings}.reverse
      puts "SHOWING THE TOP 20 BEERS IN THE WORLD SORTED BY RATINGS:"
      #beer_list = beer_list[0..19]
-    list.beer_list.each_with_index do |beer, index|
-      puts "#{index + 1}. #{beer.name} #{beer.ratings}"
+    list.each_with_index do |beer, index|
+      puts "#{index + 1}. #{beer.name}: #{beer.ratings}"
      end
    end
 
