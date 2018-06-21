@@ -15,8 +15,8 @@ class BeerList::CLI
     puts "PLEASE ENTER THE CORRESPONDING NUMBER FOR THE FOLLOWING OPTIONS"
     puts "HOW WOULD YOU LIKE TO SORT YOUR BEER LIST?"
     puts "1. LIST THE TOP BEERS IN THE WORLD"
-    puts "2. SEPERATE BETWEEN ALES AND LAGERS"
-    puts "3. CHOOSE BY SUBSTYLE"
+    puts "2. CHOOSE BY SUBSTYLE"
+    puts "3. SEPERATE BETWEEN ALES AND LAGERS"
     puts "COMING SOON: CHOOSE BY REGION"
     puts "OTHERWISE, ENTER 'EXIT'"
     answer = self.input
@@ -24,7 +24,7 @@ class BeerList::CLI
       when "1"
         answer_1
       when "2"
-        #answer_2
+        answer_2
       when "3"
         #answer_3
       when "main"
@@ -37,34 +37,18 @@ class BeerList::CLI
 
   def answer_1
     self.list_beer_score
-    puts ""
+    puts
     self.sorting_method
     answer = self.input
     case answer
     when "1"
       self.list_beer_abv
-      puts ""
+      puts
       self.more_options
-      answer = self.input
-      case answer
-      when "main"
-        menu
-      else
-        puts "GOODBYE"
-        exit
-      end
     when "2"
       self.list_beer_ratings
-      puts ""
+      puts
       self.more_options
-      answer = self.input
-      case answer
-      when "main"
-        menu
-      else
-        puts "GOODBYE"
-        exit
-      end
     when "main"
       menu
     else
@@ -72,6 +56,34 @@ class BeerList::CLI
       exit
     end
  end
+
+ def answer_2
+   self.list_sub_styles
+   puts
+   puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH THE SUBSTYLE OF CHOICE"
+   saved_input = input
+   self.list_sub_style_score(saved_input)
+   puts
+   self.sorting_method
+   puts
+   answer = self.input
+   case answer
+   when "1"
+     self.list_sub_style_abv(saved_input)
+     puts
+     self.more_options
+   when "2"
+     self.list_sub_style_ratings(saved_input)
+     puts
+     self.more_options
+   when "main"
+     menu
+   else
+     puts "GOODBYE"
+     exit
+   end
+ end
+
 
   def sorting_method
     puts "WOULD YOU LIKE TO FURTHER SORT?"
@@ -85,6 +97,14 @@ class BeerList::CLI
   def more_options
     puts "WOULD YOU LIKE TO SEE MORE LISTS?"
     puts "ENTER 'MAIN' TO DO SO, OTHERWISE TYPE 'EXIT'"
+    answer = self.input
+    case answer
+    when "main"
+      menu
+    else
+      puts "GOODBYE"
+      exit
+    end
   end
 
   def input
