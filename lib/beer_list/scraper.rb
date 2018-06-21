@@ -5,8 +5,8 @@ class Scraper
   end
 
   def create_parent_styles
-    lager = ParentStyle.new("Lager")
     ale = ParentStyle.new("Ale")
+    lager = ParentStyle.new("Lager")
   end
 
 =begin
@@ -53,7 +53,6 @@ class Scraper
     SubStyle.all.each do |sub_style|
       sub_style.parent_style.sub_styles << sub_style
     end
-    binding.pry
   end
 
   def create_beers
@@ -103,6 +102,9 @@ class Scraper
             sub_style.style_beers << Beer.new(beer_hash) unless Beer.all.any? {|beer| beer.name == beer_hash[:name]}
           end
             #REMOVED ADD ATTRS FOR NEW Beers
+    end
+    Beer.all.each do |beer|
+      beer.parent_style.beers << beer
     end
   end
 

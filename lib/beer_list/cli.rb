@@ -36,17 +36,18 @@ class BeerList::CLI
   end
 
   def answer_1
-    self.list_beer_score
+    beer_list = self.top_beers
+    self.list_beer_score(beer_list)
     puts
     self.sorting_method
     answer = self.input
     case answer
     when "1"
-      self.list_beer_abv
+      self.list_beer_abv(beer_list)
       puts
       self.more_options
     when "2"
-      self.list_beer_ratings
+      self.list_beer_ratings(beer_list)
       puts
       self.more_options
     when "main"
@@ -127,16 +128,13 @@ end
     gets.strip.downcase
   end
 
-
-   def list_regions
-     Region.all.each_with_index do |region, index|
-       puts "#{index + 1}. #{region.name}"
-     end
+   def list_parent_styles
+     ParentStyle.all.each_with_index do |parent_style, index|
+       puts "#{index + 1}. #{parent_style.name}"
    end
 
-   def list_parent_styles
-     puts "1. Ales"
-     puts "2. Lagers"
+   def list_parent_styles_beers
+
    end
 
    def list_sub_styles
@@ -212,5 +210,9 @@ end
 
 
 =begin
-
+def list_regions
+  Region.all.each_with_index do |region, index|
+    puts "#{index + 1}. #{region.name}"
+  end
+end
 =end
