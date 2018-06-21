@@ -12,4 +12,5 @@ class ParentStyle
     def self.all
       @@all
     end
+
 end

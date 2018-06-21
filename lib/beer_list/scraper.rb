@@ -5,8 +5,8 @@ class Scraper
   end
 
   def create_parent_styles
-    ale = ParentStyle.new("Ale")
-    lager = ParentStyle.new("Lager")
+    ParentStyle.new("Ale")
+    ParentStyle.new("Lager")
   end
 
 =begin
@@ -29,29 +29,19 @@ class Scraper
     #self.create_regions
     sub_styles = []
     self.get_style_page.css("table table").each do |info|
-      if info.css("span").text == "Ale Styles"
+      if info.css("td span").text != "Hybrid Styles"
+        parent_style_name = info.css("td span").text.split(" ")[0]
         info.css("td a").each do |beer_style|
           sub_styles << {
             :name => beer_style.text,
-            :parent_style => ParentStyle.all.find {|style| style.name == "Ale"},
-            :url => beer_style.attribute('href').value
-          }
-        end
-      elsif info.css("span").text == "Lager Styles"
-        info.css("td a").each do |beer_style|
-          sub_styles << {
-            :name => beer_style.text,
-            :parent_style => ParentStyle.all.find {|style| style.name == "Lager"},
+            :parent_style => ParentStyle.all.find {|style| style.name == parent_style_name},
             :url => beer_style.attribute('href').value
           }
         end
       end
     end
      sub_styles.each do |style_hash|
-      SubStyle.new(style_hash) unless SubStyle.all.any? {|sub_style| sub_style.name == style_hash[:name]}
-    end
-    SubStyle.all.each do |sub_style|
-      sub_style.parent_style.sub_styles << sub_style
+      style_hash[:parent_style].sub_styles << SubStyle.new(style_hash) unless SubStyle.all.any? {|sub_style| sub_style.name == style_hash[:name]}
     end
   end
 
