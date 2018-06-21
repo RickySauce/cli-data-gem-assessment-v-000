@@ -1,10 +1,11 @@
 class ParentStyle
-  attr_accessor :name
+  attr_accessor :name, :sub_styles
     @@all = []
 
     def initialize(name)
       @name = name
       @@all << self
+      @sub_styles = []
     end
 
     def self.all

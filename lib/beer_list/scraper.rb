@@ -47,9 +47,13 @@ class Scraper
         end
       end
     end
-    sub_styles.each do |style_hash|
+     sub_styles.each do |style_hash|
       SubStyle.new(style_hash) unless SubStyle.all.any? {|sub_style| sub_style.name == style_hash[:name]}
     end
+    SubStyle.all.each do |sub_style|
+      sub_style.parent_style.sub_styles << sub_style
+    end
+    binding.pry
   end
 
   def create_beers
