@@ -1,4 +1,21 @@
 tags:
+<<<<<<< HEAD
+  - basics
+  - puts
+  - hello world
+  - lecture
+  - lab
+  - video
+languages:
+  - ruby
+resources: 0
+type:
+  - video
+  - lab
+  - lecture
+feature_tours:
+  ask_a_question: true
+=======
   - cli
   - gem
   - oo
@@ -6,3 +23,4 @@ languages:
   - ruby
 resources:
 live_assessment: true
+>>>>>>> eef5895ab48dff1f8195ba6fe37ad8d7c2aa3f5a
