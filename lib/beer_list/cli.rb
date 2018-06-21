@@ -8,56 +8,75 @@ class BeerList::CLI
 
   def menu
     puts "GREETINGS USER!"
+    puts "BEER-LIST IS AN INTERACTIVE APP WHICH PULLS IT'S INFORMATION DIRETLY"
+    puts "FROM BEERADVOCATE.COM"
+    puts "IT THEN RETURNS TOP 20 LISTS BASED ON BEERS - BEERADVOCATE SCORES"
+    puts "(BA-SCORE), WITH NO FEWER THAN 100 RATINGS"
     puts "PLEASE ENTER THE CORRESPONDING NUMBER FOR THE FOLLOWING OPTIONS"
     puts "HOW WOULD YOU LIKE TO SORT YOUR BEER LIST?"
     puts "1. LIST THE TOP BEERS IN THE WORLD"
     puts "2. SEPERATE BETWEEN ALES AND LAGERS"
     puts "3. CHOOSE BY SUBSTYLE"
+    puts "COMING SOON: CHOOSE BY REGION"
     puts "OTHERWISE, ENTER 'EXIT'"
     answer = self.input
       case answer
       when "1"
-        self.list_beer_score
-        puts ""
-        self.sorting_method
-        answer_1 = self.input
-        case answer_1
-        when "1"
-          self.list_beer_abv
-          puts ""
-          self.more_options
-          answer_1 = self.input
-          case answer_1
-          when "main"
-            menu
-          else
-            puts "GOODBYE"
-            exit
-          end
-        when "2"
-          self.list_beer_ratings
-          puts ""
-          self.more_options
-          answer_1 = self.input
-          case answer_1
-          when "main"
-            menu
-          else
-            puts "GOODBYE"
-            exit
-          end
-        when "main"
-          menu
-        else
-          puts "GOODBYE"
-          exit
-      end
+        answer_1
+      when "2"
+        #answer_2
+      when "3"
+        #answer_3
+      when "main"
+        menu
+      else
+        puts "GOODBYE"
+        exit
     end
   end
 
+  def answer_1
+    self.list_beer_score
+    puts ""
+    self.sorting_method
+    answer = self.input
+    case answer
+    when "1"
+      self.list_beer_abv
+      puts ""
+      self.more_options
+      answer = self.input
+      case answer
+      when "main"
+        menu
+      else
+        puts "GOODBYE"
+        exit
+      end
+    when "2"
+      self.list_beer_ratings
+      puts ""
+      self.more_options
+      answer = self.input
+      case answer
+      when "main"
+        menu
+      else
+        puts "GOODBYE"
+        exit
+      end
+    when "main"
+      menu
+    else
+      puts "GOODBYE"
+      exit
+    end
+ end
+
   def sorting_method
     puts "WOULD YOU LIKE TO FURTHER SORT?"
-    puts "IF SO SELECT THE NUMBER THAT CORRESPONDS WITH YOUR SORTING METHOD OF CHOICE"
+    puts "IF SO SELECT THE NUMBER THAT CORRESPONDS"
+    puts "WITH YOUR SORTING METHOD OF CHOICE"
     puts "OTHERWISE TYPE 'MAIN' TO RETURN TO THE MAIN MENU OR 'EXIT' TO LEAVE"
     puts "1. SORT BY ABV"
     puts "2. SORT BY TOTAL REVIEWS"
