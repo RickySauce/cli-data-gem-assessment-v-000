@@ -45,20 +45,33 @@ class Scraper
     end
   end
 
-  def get_beer_hash(doc)
+  def get_beer_hash(doc, beer_list, sub_style)
+    beer_list
     doc.css("tr").drop(3).each do |info|
-      ratings = info.css("td b").collect {|child| child.text.gsub(",","") if child == info.css("td b")[1]}.reject! {|item| item == nil}.join.to_i
-      if ratings > 100 && info.css("td a b").text != ""
-        beer_list << {
-          :name => info.css("td a b").text,
-          :url => info.css("td a").attribute('href').value,
-          :parent_style => sub_style.parent_style,
-          :ratings => ratings,
-          :score => info.css("td b").collect {|child| child.text if child == info.css("td b")[2]}.reject! {|text| text == nil}.join.to_f,
-          :abv => info.css("td span").text.to_f
-          }
+      unless info.css("td a b").text == ""
+        ratings = info.css("td b").collect {|child| child.text.gsub(",","") if child == info.css("td b")[1]}.reject! {|item| item == nil}.join.to_i
+          if ratings > 99
+            beer_list << {
+              :name => info.css("td a b").text,
+              :url => info.css("td a").attribute('href').value,
+              :parent_style => sub_style.parent_style,
+              :ratings => ratings,
+              :score => info.css("td b").collect {|child| child.text if child == info.css("td b")[2]}.reject! {|text| text == nil}.join.to_f,
+              :abv => info.css("td span").text.to_f
+              }
+            end
         end
     end
+    beer_list
+  end
+
+  def get_ratings_array(doc)
+      ratings_array = []
+      doc.css("tr td b").drop(3).each do |ratings|
+        ratings_array << ratings.text.gsub(",","").to_i if ratings.text.gsub(",","").to_i > 99 && ratings.text.split("").count < 7
+      end
+      ratings_array.pop if ratings_array.count > 1 && ratings_array[-1] > ratings_array[-2]
+      ratings_array
   end
 
   def create_beers
@@ -66,31 +79,16 @@ class Scraper
     beer_list = []
     SubStyle.all.each do |sub_style|
       beer_list.clear
-        doc = Nokogiri::HTML(open("https://www.beeradvocate.com#{sub_style.url}?sort=avgD"))
-        self.get_beer_hash(doc)
-        binding.pry
+      doc = Nokogiri::HTML(open("https://www.beeradvocate.com#{sub_style.url}?sort=avgD"))
+        beer_list = self.get_beer_hash(doc, beer_list, sub_style)
         page_counter = 50
         counter = 20
         doc = Nokogiri::HTML(open("https://www.beeradvocate.com#{sub_style.url}?sort=revsD"))
-          ratings_array = []
-          doc.css("tr td b").drop(3).each do |ratings|
-            ratings_array << ratings.text.gsub(",","").to_i if ratings.text.gsub(",","").to_i > 99 && ratings.text.split("").count < 7
-          end
-          ratings_array.pop if ratings_array.count > 1 && ratings_array[-1] > ratings_array[-2]
+          ratings_array = self.get_ratings_array(doc)
           counter = ratings_array.count if ratings_array.count < counter
         while beer_list.count < counter
           doc = Nokogiri::HTML(open("https://www.beeradvocate.com#{sub_style.url}?sort=avgD&start=#{page_counter}"))
-          doc.css("tr").drop(3).each do |info|
-            beer_list << {
-              :name => info.css("td a b").text,
-              :url => info.css("td a").attribute('href').value,
-              :parent_style => sub_style.parent_style,
-              :ratings => info.css("td b").collect {|child| child.text.gsub(",","") if child == info.css("td b")[1]}.reject! {|text| text == nil}.join.to_i,
-              :score => info.css("td b").collect {|child| child.text if child == info.css("td b")[2]}.reject! {|text| text == nil}.join.to_f,
-              :abv => info.css("td span").text.to_f
-              } unless info.css("td a b").text == ""
-            end
-            beer_list.reject! {|beer_hash| beer_hash[:ratings] < 100}
+            beer_list = self.get_beer_hash(doc, beer_list, sub_style)
             page_counter += 50
           end
           beer_list = beer_list[0..19]
