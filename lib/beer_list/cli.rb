@@ -288,7 +288,6 @@ end
 
    def list_beer_score(beer_list)
      puts "SHOWING THE TOP 20 BEERS IN THE WORLD SORTED BY BA-SCORE:"
-     #beer_list = beer_list[0..19]
      beer_list.each_with_index do |beer, index|
       puts "#{index + 1}. #{beer.name}: #{beer.score}"
      end
@@ -297,7 +296,6 @@ end
    def list_beer_abv(beer_list)
     list = beer_list.sort_by {|beer| beer.abv}.reverse
      puts "SHOWING THE TOP 20 BEERS IN THE WORLD SORTED BY ABV:"
-     #beer_list = beer_list[0..19]
     list.each_with_index do |beer, index|
       puts "#{index + 1}. #{beer.name}: #{beer.abv}%"
      end
@@ -306,7 +304,6 @@ end
    def list_beer_ratings(beer_list)
      list = beer_list.sort_by {|beer| beer.ratings}.reverse
      puts "SHOWING THE TOP 20 BEERS IN THE WORLD SORTED BY RATINGS:"
-     #beer_list = beer_list[0..19]
     list.each_with_index do |beer, index|
       puts "#{index + 1}. #{beer.name}: #{beer.ratings}"
      end
