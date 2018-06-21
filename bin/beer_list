@@ -4,6 +4,6 @@ require './lib/beer_list'
 
 
 
-Scraper.new.create_sub_styles
+Scraper.new.create_beers
 BeerList::CLI.new.call
 #Scraper.new.create_beers

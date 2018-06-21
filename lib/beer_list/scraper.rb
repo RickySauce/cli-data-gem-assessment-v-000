@@ -58,7 +58,6 @@ class Scraper
   def create_beers
     self.create_sub_styles
     beer_list = []
-    # DONT FORGET TO TAKE THE DROP OUT BELOW
     SubStyle.all.each do |sub_style|
       beer_list.clear
         doc = Nokogiri::HTML(open("https://www.beeradvocate.com#{sub_style.url}?sort=avgD"))
@@ -103,9 +102,7 @@ class Scraper
           end
             #REMOVED ADD ATTRS FOR NEW Beers
     end
-    Beer.all.each do |beer|
-      beer.parent_style.beers << beer
-    end
+    Beer.all.each {|beer| beer.parent_style.beers << beer}
   end
 
   #doc = Nokogiri::HTML(open("https://www.beeradvocate.com/beer/style/128/?sort=avgD&start=1000"))
@@ -128,4 +125,10 @@ sub_style.style_beers.each do |beer|
   beer.add_attrs(attr_hash)
 end
 ----------------------------------------------
+=end
+
+
+=begin
+  ------- ORIGINAL DEF CREATE_BEERS ------------------
+  ---------------------------------------------------
 =end
