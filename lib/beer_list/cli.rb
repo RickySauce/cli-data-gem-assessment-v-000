@@ -100,7 +100,51 @@ class BeerList::CLI
      answer = input
      case answer
      when "1"
-       self.list_parent_style_beer_score(saved_input)
+       self.list_parent_style_beer_score(beer_list)
+       puts
+       self.sorting_method
+       answer = input
+       case answer
+       when "1"
+         self.list_parent_style_beer_abv(beer_list)
+         puts
+         self.more_options
+       when "2"
+         self.list_parent_style_beer_ratings(beer_list)
+         puts
+         self.more_options
+       end
+     when "2"
+       self.list_parent_style_sub_styles(saved_input)
+     end
+   when "2"
+     puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH YOUR SORTING METHOD OF CHOICE"
+     puts "1. SORT BEERS BY THIS PARENT STYLE"
+     puts "2. SORT SUB-STYLES BY THIS PARENT STYLE"
+     beer_list = self.parent_top_beers(saved_input)
+     answer = input
+     case answer
+     when "1"
+       self.list_parent_style_beer_score(beer_list)
+       puts
+       self.sorting_method
+       answer = input
+       case answer
+       when "1"
+         self.list_parent_style_beer_abv(beer_list)
+         puts
+         self.more_options
+       when "2"
+         self.list_parent_style_beer_ratings(beer_list)
+         puts
+         self.more_options
+       end
+     when "2"
+       self.list_parent_style_sub_styles(saved_input)
+       puts
+       puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH THE SUB-STYLE OF CHOICE"
+       saved_input = input
+       self.list_sub_style_score(saved_input)
        puts
        self.sorting_method
        answer = input
@@ -109,11 +153,7 @@ class BeerList::CLI
 
        end
 
-     when "2"
-       self.list_parent_style_sub_styles(saved_input)
      end
-   when "2"
-     #experimenting
    end
 
 end
@@ -163,7 +203,19 @@ end
      end
    end
 
+   def list_parent_style_beer_abv(beer_list)
+     puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY ABV"
+     beer_list.each_with_index do |beer, index|
+       puts "#{index +1}. #{beer.name} #{beer.abv} %"
+     end
+   end
 
+   def list_parent_style_beer_ratings(beer_list)
+     puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY RATINGS"
+     beer_list.each_with_index do |beer, index|
+       puts "#{index +1}. #{beer.name} #{beer.ratings}"
+     end
+   end
 
    def list_parent_style_sub_styles(answer)
      choice = ParentStyle.all[answer.to_i - 1]
@@ -171,6 +223,34 @@ end
      choice.sub_styles.each_with_index do |sub_style, index|
         puts "#{index + 1}. #{sub_style.name}"
       end
+   end
+
+   def list_parent_sub_style_score(answer)
+     choice = ParentStyle.all[answer.to_i - 1]
+     list = choice.style_beers.sort_by {|beer| beer.score}.reverse
+      puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY BA-SCORE"
+     list.each_with_index do |beer, index|
+       puts "#{index + 1}. #{beer.name} #{beer.score}"
+     end
+   end
+
+   def list_parent_sub_style_abv(answer)
+     choice = ParentStyle.all[answer.to_i - 1]
+     list = choice.style_beers.sort_by {|beer| beer.score}.reverse
+     puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY ABV"
+     list.each_with_index do |beer, index|
+       puts "#{index + 1}. #{beer.name} #{beer.abv}%"
+     end
+   end
+
+   def list_parent_sub_style_ratings(answer)
+     choice = ParentStyle.all[answer.to_i - 1]
+     list = choice.style_beers.sort_by {|beer| beer.score}.reverse
+     puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY ratings"
+     list.each_with_index do |beer, index|
+       puts "#{index + 1}. #{beer.name} #{beer.ratings}"
+     end
+   end
    end
 
    def list_sub_styles
