@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # BeerList
 
 Beer-List is an interactive app that retrieves its data from BeerAdvocate.com. It populates top 20 lists based on a beers score and that beer must have no less than 100 ratings.
