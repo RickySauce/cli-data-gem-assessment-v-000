@@ -196,9 +196,31 @@ def sorting_method_sub_style(saved_input, beer_list)
   when "1"
     self.list_sub_style_abv(saved_input)
     puts
-    self.more_options
+    puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
+    puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
+    puts
+    answer = self.input
+    if answer == "back"
+      self.answer_sub_styles
+    else
+      self.beer_info(beer_list)
+      puts
+      self.more_options
+    end
   when "2"
     self.list_sub_style_ratings(saved_input)
+    puts
+    puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
+    puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
+    puts
+    answer = self.input
+    if answer == "back"
+      self.answer_sub_styles
+    else
+      self.beer_info(beer_list)
+      puts
+      self.more_options
+    end
   when "main"
     menu
   else
@@ -221,10 +243,10 @@ end
       answer = self.input
       puts
       puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
-      puts "OTHERWISE ENTER 'MORE' FOR MORE OPTIONS"
+      puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
       puts
-      if answer == 'more'
-        self.more_options
+      if answer == 'back'
+        self.answer_beers
       else
         self.beer_info(beer_list, answer)
         puts
@@ -235,10 +257,10 @@ end
       answer = self.input
       puts
       puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
-      puts "OTHERWISE ENTER 'MORE' FOR MORE OPTIONS"
+      puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
       puts
-      if answer == 'more'
-        self.more_options
+      if answer == 'back'
+        self.answer_beers
       else
         self.beer_info(beer_list, answer)
         puts
