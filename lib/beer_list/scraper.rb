@@ -77,10 +77,14 @@ class Scraper
   def create_beers
     self.create_sub_styles
     beer_list = []
-    SubStyle.all.each do |sub_style|
+    SubStyle.all.drop(95).each do |sub_style|
       beer_list.clear
       doc = Nokogiri::HTML(open("https://www.beeradvocate.com#{sub_style.url}?sort=avgD"))
-        description = doc.css("div#ba-content").text.split("\n")[3].split("Description:")[1].split("Average")[0]
+        if doc.css("div#ba-content").text.split("\n")[3] != "No description, yet."
+          description = doc.css("div#ba-content").text.split("\n")[3].split("Description:")[1].split("Average")[0].split("\r")[0].delete("\"").delete("/").gsub("\u0092","'").delete("\u0093").delete("\u0094")
+        else
+          description = doc.css("div#ba-content").text.split("\n")[3]
+        end
         sub_style.add_desc(description)
         beer_list = self.get_beer_hash(doc, beer_list, sub_style)
         page_counter = 50

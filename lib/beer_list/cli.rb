@@ -27,8 +27,6 @@ class BeerList::CLI
         answer_sub_styles
       when "3"
         answer_parent
-      when "main"
-        menu
       else
         puts "GOODBYE"
         exit
@@ -40,12 +38,17 @@ class BeerList::CLI
     self.list_beer_score(beer_list)
     puts
     puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
-    puts "OTHERWISE ENTER 'MORE' FOR MORE OPTIONS"
+    puts "OTHERWISE ENTER 'EXIT' TO LEAVE, 'MORE' FOR MORE OPTIONS, OR 'MAIN' FOR THE MAIN MENU"
     puts
     answer = self.input
     if answer == 'more'
       self.sorting_method_beer(beer_list)
-    elsif
+    elsif answer == 'main'
+      menu
+    elsif answer == 'exit'
+      puts "GOODBYE"
+      exit
+    else
       self.beer_info(beer_list, answer)
       puts
       self.more_options
@@ -74,6 +77,11 @@ class BeerList::CLI
      answer = self.input
      if answer == 'more'
        self.sorting_method_beer(beer_list)
+     elsif answer == 'main'
+       menu
+     elsif answer == 'exit'
+       puts "GOODBYE"
+       exit
      else
        self.beer_info(beer_list, answer)
        puts
@@ -93,6 +101,11 @@ class BeerList::CLI
      answer = self.input
      if answer == 'more'
        self.sorting_method_sub_style(saved_input, beer_list)
+     elsif answer == 'main'
+       menu
+     elsif answer == 'exit'
+       puts "GOODBYE"
+       exit
      else
        self.beer_info(beer_list, answer)
        puts
@@ -128,6 +141,11 @@ def answer_parent
     answer = self.input
     if answer == "more"
       self.sorting_method_parent_1(saved_choice, beer_list, nil)
+    elsif answer == 'main'
+      menu
+    elsif answer == 'exit'
+      puts "GOODBYE"
+      exit
     else
       self.beer_info(beer_list, answer)
       puts
@@ -148,6 +166,11 @@ def answer_parent
     answer = self.input
     if answer == "more"
       self.sorting_method_parent_2(saved_choice, beer_list, saved_input)
+    elsif answer == 'main'
+      menu
+    elsif answer == 'exit'
+      puts "GOODBYE"
+      exit
     else
       self.beer_info(beer_list, answer)
       puts
@@ -181,6 +204,11 @@ def sorting_method_parent_2(saved_choice, beer_list, saved_input)
       answer = self.input
       if answer == "back"
         self.answer_parent
+      elsif answer == 'main'
+        menu
+      elsif answer == 'exit'
+        puts "GOODBYE"
+        exit
       else
         self.beer_info(beer_list, answer)
         puts
@@ -195,6 +223,11 @@ def sorting_method_parent_2(saved_choice, beer_list, saved_input)
       answer = self.input
       if answer == "back"
         self.answer_parent
+      elsif answer == 'main'
+        menu
+      elsif answer == 'exit'
+        puts "GOODBYE"
+        exit
       else
         self.beer_info(beer_list, answer)
         puts
@@ -226,6 +259,11 @@ def sorting_method_parent_1(saved_choice, beer_list)
     answer = self.input
     if answer == "back"
       self.answer_parent
+    elsif answer == 'main'
+      menu
+    elsif answer == 'exit'
+      puts "GOODBYE"
+      exit
     else
       self.beer_info(beer_list, answer)
       puts
@@ -240,6 +278,11 @@ def sorting_method_parent_1(saved_choice, beer_list)
     answer = self.input
     if answer == "back"
       self.answer_parent
+    elsif answer == 'main'
+      menu
+    elsif answer == 'exit'
+      puts "GOODBYE"
+      exit
     else
       self.beer_info(beer_list, answer)
       puts
@@ -271,6 +314,11 @@ def sorting_method_sub_style(saved_input, beer_list)
     answer = self.input
     if answer == "back"
       self.answer_sub_styles
+    elsif answer == 'main'
+      menu
+    elsif answer == 'exit'
+      puts "GOODBYE"
+      exit
     else
       self.beer_info(beer_list)
       puts
@@ -285,6 +333,11 @@ def sorting_method_sub_style(saved_input, beer_list)
     answer = self.input
     if answer == "back"
       self.answer_sub_styles
+    elsif answer == 'main'
+      menu
+    elsif answer == 'exit'
+      puts "GOODBYE"
+      exit
     else
       self.beer_info(beer_list)
       puts
@@ -309,13 +362,18 @@ end
     case answer
     when "1"
       self.list_beer_abv(beer_list)
-      answer = self.input
       puts
       puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
       puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
       puts
+      answer = self.input
       if answer == 'back'
         self.answer_beers
+      elsif answer == 'main'
+        menu
+      elsif answer == 'exit'
+        puts "GOODBYE"
+        exit
       else
         self.beer_info(beer_list, answer)
         puts
@@ -323,13 +381,18 @@ end
       end
     when "2"
       self.list_beer_ratings(beer_list)
-      answer = self.input
       puts
       puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
       puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
       puts
+      answer = self.input
       if answer == 'back'
         self.answer_beers
+      elsif answer == 'main'
+        menu
+      elsif answer == 'exit'
+        puts "GOODBYE"
+        exit
       else
         self.beer_info(beer_list, answer)
         puts
