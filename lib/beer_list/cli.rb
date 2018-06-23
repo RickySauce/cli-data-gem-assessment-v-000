@@ -7,6 +7,8 @@ class BeerList::CLI
   end
 
   def menu
+    answer = self.input
+    self.get_sub_style_selections(answer)
     puts "GREETINGS USER!"
     puts "BEER-LIST IS AN INTERACTIVE APP WHICH PULLS IT'S INFORMATION DIRECTLY"
     puts "FROM BEERADVOCATE.COM"
@@ -249,6 +251,24 @@ end
      end
    end
 
+   def get_sub_style_selections(answer)
+     count = answer.to_i
+     count_array = Array.new(count,"")
+     style_selections = []
+     count_array.each do |selection|
+        puts "YOU HAVE #{count} SELECTIONS REMAINING"
+       input = gets.strip
+       while input.to_i < 1 || SubStyle.all[input.to_i] == nil
+         puts "PLEASE SELECT ANOTHER NUMBER. MAKE SURE THAT NUMBER CORRESPONDS WITH AN EXISTING SUB-STYLE"
+         input = gets.strip
+       end
+       style_selections << input.to_i - 1
+       count -= 1
+     end
+     style_selections
+   end
+
+
    def list_sub_style_score(answer)
     choice = SubStyle.all[answer.to_i - 1]
     list = choice.style_beers.sort_by {|beer| beer.score}.reverse
@@ -307,6 +327,30 @@ end
     list.each_with_index do |beer, index|
       puts "#{index + 1}. #{beer.name}: #{beer.ratings}"
      end
+   end
+
+   def score_list(list)
+     beer_list.each_with_index do |beer, index|
+      puts "#{index + 1}. #{beer.name}: #{beer.score}"
+     end
+     puts
+     puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTED SUB-STYLE" if list.count < 10
+   end
+
+   def abv_list(list)
+     list.each_with_index do |beer, index|
+       puts "#{index + 1}. #{beer.name}: #{beer.abv}%"
+      end
+      puts
+      puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTED SUB-STYLE" if list.count < 10
+   end
+
+   def ratings_list(list)
+     list.each_with_index do |beer, index|
+       puts "#{index + 1}. #{beer.name}: #{beer.ratings}"
+     end
+     puts
+     puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTED SUB-STYLE" if list.count < 10
    end
 
 end
