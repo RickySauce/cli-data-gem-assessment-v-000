@@ -41,23 +41,7 @@ class BeerList::CLI
     beer_list = self.top_beers
     self.list_beer_score(beer_list)
     puts
-    self.sorting_method
-    answer = self.input
-    case answer
-    when "1"
-      self.list_beer_abv(beer_list)
-      puts
-      self.more_options
-    when "2"
-      self.list_beer_ratings(beer_list)
-      puts
-      self.more_options
-    when "main"
-      menu
-    else
-      puts "GOODBYE"
-      exit
-    end
+    self.sorting_method_beer(beer_list)
  end
 
  def answer_2
@@ -75,8 +59,8 @@ class BeerList::CLI
      beer_list = self.get_sub_style_selections(answer)
      beer_list = self.combination_top_beers(beer_list)
      self.list_beer_score(beer_list)
-
-
+     puts
+     self.sorting_method_beer(beer_list)
    when "2"
      self.list_sub_styles
      puts
@@ -171,17 +155,62 @@ def answer_3
 end
 
 
-  def sorting_method
+
+def sorting_method_parent
+  puts "WOULD YOU LIKE TO FURTHER SORT?"
+  puts "IF SO SELECT THE NUMBER THAT CORRESPONDS"
+  puts "WITH YOUR SORTING METHOD OF CHOICE"
+  puts "OTHERWISE TYPE 'MAIN' TO RETURN TO THE MAIN MENU OR 'EXIT' TO LEAVE"
+  puts "1. SORT BY ABV"
+  puts "2. SORT BY TOTAL REVIEWS"
+  answer = self.input
+  case answer
+  when "1"
+  when "2"
+  when "main"
+    menu
+  else
+    puts "GOODBYE"
+    exit
+  end
+end
+
+def sorting_method_sub_style
+  puts "WOULD YOU LIKE TO FURTHER SORT?"
+  puts "IF SO SELECT THE NUMBER THAT CORRESPONDS"
+  puts "WITH YOUR SORTING METHOD OF CHOICE"
+  puts "OTHERWISE TYPE 'MAIN' TO RETURN TO THE MAIN MENU OR 'EXIT' TO LEAVE"
+  puts "1. SORT BY ABV"
+  puts "2. SORT BY TOTAL REVIEWS"
+  answer = self.input
+  case answer
+  when "1"
+  when "2"
+  when "main"
+    menu
+  else
+    puts "GOODBYE"
+    exit
+  end
+end
+
+  def sorting_method_beer(beer_list)
     puts "WOULD YOU LIKE TO FURTHER SORT?"
     puts "IF SO SELECT THE NUMBER THAT CORRESPONDS"
     puts "WITH YOUR SORTING METHOD OF CHOICE"
     puts "OTHERWISE TYPE 'MAIN' TO RETURN TO THE MAIN MENU OR 'EXIT' TO LEAVE"
     puts "1. SORT BY ABV"
     puts "2. SORT BY TOTAL REVIEWS"
-    answer = input
+    answer = self.input
     case answer
     when "1"
+      self.list_beer_abv(beer_list)
+      puts
+      self.more_options
     when "2"
+      self.list_beer_ratings(beer_list)
+      puts
+      self.more_options
     when "main"
       menu
     else
