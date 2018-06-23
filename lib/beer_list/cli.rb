@@ -46,7 +46,7 @@ class BeerList::CLI
     if answer == 'more'
       self.sorting_method_beer(beer_list)
     elsif
-      self.beer_info(beer_list,answer)
+      self.beer_info(beer_list, answer)
       puts
       self.more_options
     end
@@ -84,7 +84,7 @@ class BeerList::CLI
      puts
      puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH THE SUBSTYLE OF CHOICE"
      saved_input = input
-     beer_list = SubStyle.all[saved_input].style_beers
+     beer_list = SubStyle.all[saved_input.to_i - 1].style_beers
      self.list_sub_style_score(saved_input)
      puts
      puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
@@ -94,7 +94,7 @@ class BeerList::CLI
      if answer == 'more'
        self.sorting_method_sub_style(saved_input, beer_list)
      else
-       self.beer_info(beer_list)
+       self.beer_info(beer_list, answer)
        puts
        self.more_options
      end
@@ -122,16 +122,36 @@ def answer_parent
     beer_list = parent_top_beers(saved_choice)
     self.list_parent_style_beer_score(beer_list,saved_choice)
     puts
-    self.sorting_method_parent(saved_choice, beer_list, nil)
+    puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
+    puts "OTHERWISE ENTER 'MORE' FOR MORE OPTIONS"
+    puts
+    answer = self.input
+    if answer == "more"
+      self.sorting_method_parent(saved_choice, beer_list, nil)
+    else
+      self.beer_info(beer_list, answer)
+      puts
+      self.more_options
+    end
   when "2"
     self.list_parent_style_sub_styles(saved_choice)
     puts
     puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH THE SUB-STYLE OF CHOICE"
     saved_input = input
     puts
+    beer_list = saved_choice.sub_styles[saved_input.to_i - 1].style_beers
     self.list_parent_sub_style_score(saved_input, saved_choice)
     puts
-    self.sorting_method_parent(saved_choice, nil, saved_input)
+    puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
+    puts "OTHERWISE ENTER 'MORE' FOR MORE OPTIONS"
+    puts
+    answer = self.input
+    if answer == "more"
+      self.sorting_method_parent(saved_choice, nil, saved_input)
+    else
+      self.beer_info(beer_list, answer)
+      puts
+      self.more_options
   when "main"
     menu
   else
@@ -142,45 +162,66 @@ end
 
 
 
-def sorting_method_parent(saved_choice, beer_list = nil, saved_input = nil)
+def sorting_method_parent_1(saved_choice, beer_list, saved_input)
   puts "WOULD YOU LIKE TO FURTHER SORT?"
   puts "IF SO SELECT THE NUMBER THAT CORRESPONDS"
   puts "WITH YOUR SORTING METHOD OF CHOICE"
   puts "OTHERWISE TYPE 'MAIN' TO RETURN TO THE MAIN MENU OR 'EXIT' TO LEAVE"
   puts "1. SORT BY ABV"
   puts "2. SORT BY TOTAL REVIEWS"
-  if beer_list == nil
+  answer = self.input
     case answer
     when "1"
       self.list_parent_sub_style_abv(saved_input, saved_choice)
       puts
-      self.more_options
+      puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
+      puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
+      puts
+      answer = self.input
+      if answer == "back"
+        self.answer_parent
+      else
+        self.beer_info(beer_list, answer)
+        puts
+        self.more_options
+      end
     when "2"
       self.list_parent_sub_style_ratings(saved_input, saved_choice)
       puts
-      self.more_options
+      puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
+      puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
+      puts
+      answer = self.input
+      if answer == "back"
+        self.answer_parent
+      else
+        self.beer_info(beer_list, answer)
+        puts
+        self.more_options
+      end
     when "main"
       menu
     else
       puts "GOODBYE"
       exit
     end
-  else saved_input == nil
-    case answer
-    when "1"
-      self.list_parent_style_beer_abv(beer_list, saved_choice)
-      puts
-      self.more_options
-    when "2"
-      self.list_parent_style_beer_ratings(beer_list, saved_choice)
-      puts
-      self.more_options
-    when "main"
-      menu
-    else
-      puts "GOODBYE"
-      exit
-    end
+end
+
+def sorting_method_parent_2(saved_choice, beer_list, saved_input)
+  case answer
+  when "1"
+    self.list_parent_style_beer_abv(beer_list, saved_choice)
+    puts
+    self.more_options
+  when "2"
+    self.list_parent_style_beer_ratings(beer_list, saved_choice)
+    puts
+    self.more_options
+  when "main"
+    menu
+  else
+    puts "GOODBYE"
+    exit
   end
 end
 
