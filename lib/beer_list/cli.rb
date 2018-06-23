@@ -92,6 +92,9 @@ class BeerList::CLI
      puts
      puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH THE SUBSTYLE OF CHOICE"
      saved_input = input
+     if SubStyle.all[saved_input.to_i - 1] == nil
+       saved_input = 1
+     end
      beer_list = SubStyle.all[saved_input.to_i - 1].style_beers
      self.list_sub_style_score(saved_input)
      puts
