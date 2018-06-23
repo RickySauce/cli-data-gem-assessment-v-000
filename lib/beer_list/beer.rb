@@ -19,6 +19,6 @@ class Beer
   end
 
   def list_info
-    @attributes.each {|key, value| if key != :name puts "#{key.gsub(":","")}: #{value}"}
+    @attributes.each {|key, value| puts "#{key.gsub(":","")}: #{value}" if key != :name}
   end
 end
