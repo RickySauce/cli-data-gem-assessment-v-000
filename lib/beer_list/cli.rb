@@ -22,11 +22,11 @@ class BeerList::CLI
     answer = self.input
       case answer
       when "1"
-        answer_beers
+        self.answer_beers
       when "2"
-        answer_sub_styles
+        self.answer_sub_styles
       when "3"
-        answer_parent
+        self.answer_parent
       else
         puts "GOODBYE"
         exit
@@ -44,7 +44,7 @@ class BeerList::CLI
     if answer == 'more'
       self.sorting_method_beer(beer_list)
     elsif answer == 'main'
-      menu
+      self.menu
     elsif answer == 'exit'
       puts "GOODBYE"
       exit
@@ -56,11 +56,11 @@ class BeerList::CLI
  end
 
  def answer_sub_styles
-   answer = input
    puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH ONE OF THE FOLLOWING:"
    puts "1. CREATE A CUSTOM LIST OF TWO OR MORE SUB-STYLES"
    puts "2. CREATE A LIST FROM A SINGLE SUB-STYLE"
    puts "ELSE, ENTER 'EXIT' TO LEAVE OR 'MAIN' FOR THE MAIN MENU"
+   answer = input
    case answer
    when "1"
      self.list_sub_styles
@@ -72,13 +72,13 @@ class BeerList::CLI
      self.list_beer_score(beer_list)
      puts
      puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
-     puts "OTHERWISE ENTER 'MORE' FOR MORE OPTIONS"
+     puts "OTHERWISE ENTER 'EXIT' TO LEAVE, 'MORE' FOR MORE OPTIONS, OR 'MAIN' FOR THE MAIN MENU"
      puts
      answer = self.input
      if answer == 'more'
        self.sorting_method_beer(beer_list)
      elsif answer == 'main'
-       menu
+       self.menu
      elsif answer == 'exit'
        puts "GOODBYE"
        exit
@@ -96,13 +96,13 @@ class BeerList::CLI
      self.list_sub_style_score(saved_input)
      puts
      puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
-     puts "OTHERWISE ENTER 'MORE' FOR MORE OPTIONS"
+     puts "OTHERWISE ENTER 'EXIT' TO LEAVE, 'MORE' FOR MORE OPTIONS, OR 'MAIN' FOR THE MAIN MENU"
      puts
      answer = self.input
      if answer == 'more'
        self.sorting_method_sub_style(saved_input, beer_list)
      elsif answer == 'main'
-       menu
+      self.menu
      elsif answer == 'exit'
        puts "GOODBYE"
        exit
@@ -112,7 +112,7 @@ class BeerList::CLI
        self.more_options
      end
    when "main"
-     menu
+     self.menu
    else
      puts "GOODBYE"
      exit
@@ -136,13 +136,13 @@ def answer_parent
     self.list_parent_style_beer_score(beer_list,saved_choice)
     puts
     puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
-    puts "OTHERWISE ENTER 'MORE' FOR MORE OPTIONS"
+    puts "OTHERWISE ENTER 'EXIT' TO LEAVE, 'MORE' FOR MORE OPTIONS, OR 'MAIN' FOR THE MAIN MENU"
     puts
     answer = self.input
     if answer == "more"
       self.sorting_method_parent_1(saved_choice, beer_list, nil)
     elsif answer == 'main'
-      menu
+      self.menu
     elsif answer == 'exit'
       puts "GOODBYE"
       exit
@@ -161,13 +161,13 @@ def answer_parent
     self.list_parent_sub_style_score(saved_input, saved_choice)
     puts
     puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
-    puts "OTHERWISE ENTER 'MORE' FOR MORE OPTIONS"
+    puts "OTHERWISE ENTER 'EXIT' TO LEAVE, 'MORE' FOR MORE OPTIONS, OR 'MAIN' FOR THE MAIN MENU"
     puts
     answer = self.input
     if answer == "more"
       self.sorting_method_parent_2(saved_choice, beer_list, saved_input)
     elsif answer == 'main'
-      menu
+      self.menu
     elsif answer == 'exit'
       puts "GOODBYE"
       exit
@@ -177,7 +177,7 @@ def answer_parent
       self.more_options
     end
   when "main"
-    menu
+    self.menu
   else
     puts "GOODBYE"
     exit
@@ -190,7 +190,7 @@ def sorting_method_parent_2(saved_choice, beer_list, saved_input)
   puts "WOULD YOU LIKE TO FURTHER SORT?"
   puts "IF SO SELECT THE NUMBER THAT CORRESPONDS"
   puts "WITH YOUR SORTING METHOD OF CHOICE"
-  puts "OTHERWISE TYPE 'MAIN' TO RETURN TO THE MAIN MENU OR 'EXIT' TO LEAVE"
+  puts "OTHERWISE TYPE 'MAIN' TO RETURN TO THE MAIN MENU, 'BACK' TO RETURN TO THE LEAD SECTION, OR 'EXIT' TO LEAVE"
   puts "1. SORT BY ABV"
   puts "2. SORT BY TOTAL REVIEWS"
   answer = self.input
@@ -199,13 +199,13 @@ def sorting_method_parent_2(saved_choice, beer_list, saved_input)
       self.list_parent_sub_style_abv(saved_input, saved_choice)
       puts
       puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
-      puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
+      puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION, 'MAIN' FOR THE MAIN MENU, OR 'EXIT' TO LEAVE"
       puts
       answer = self.input
       if answer == "back"
         self.answer_parent
       elsif answer == 'main'
-        menu
+        self.menu
       elsif answer == 'exit'
         puts "GOODBYE"
         exit
@@ -218,13 +218,13 @@ def sorting_method_parent_2(saved_choice, beer_list, saved_input)
       self.list_parent_sub_style_ratings(saved_input, saved_choice)
       puts
       puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
-      puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
+      puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION, 'MAIN' FOR THE MAIN MENU, OR 'EXIT' TO LEAVE"
       puts
       answer = self.input
       if answer == "back"
         self.answer_parent
       elsif answer == 'main'
-        menu
+        self.menu
       elsif answer == 'exit'
         puts "GOODBYE"
         exit
@@ -234,7 +234,9 @@ def sorting_method_parent_2(saved_choice, beer_list, saved_input)
         self.more_options
       end
     when "main"
-      menu
+      self.menu
+    when "back"
+      self.answer_parent
     else
       puts "GOODBYE"
       exit
@@ -245,7 +247,7 @@ def sorting_method_parent_1(saved_choice, beer_list)
   puts "WOULD YOU LIKE TO FURTHER SORT?"
   puts "IF SO SELECT THE NUMBER THAT CORRESPONDS"
   puts "WITH YOUR SORTING METHOD OF CHOICE"
-  puts "OTHERWISE TYPE 'MAIN' TO RETURN TO THE MAIN MENU OR 'EXIT' TO LEAVE"
+  puts "OTHERWISE TYPE 'MAIN' TO RETURN TO THE MAIN MENU, 'BACK' TO RETURN TO THE LEAD SECTION, OR 'EXIT' TO LEAVE"
   puts "1. SORT BY ABV"
   puts "2. SORT BY TOTAL REVIEWS"
   answer = self.input
@@ -254,13 +256,13 @@ def sorting_method_parent_1(saved_choice, beer_list)
     self.list_parent_style_beer_abv(beer_list, saved_choice)
     puts
     puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
-    puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
+    puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION, 'MAIN' FOR THE MAIN MENU, OR 'EXIT' TO LEAVE"
     puts
     answer = self.input
     if answer == "back"
       self.answer_parent
     elsif answer == 'main'
-      menu
+      self.menu
     elsif answer == 'exit'
       puts "GOODBYE"
       exit
@@ -273,13 +275,13 @@ def sorting_method_parent_1(saved_choice, beer_list)
     self.list_parent_style_beer_ratings(beer_list, saved_choice)
     puts
     puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
-    puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
+    puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION, 'MAIN' FOR THE MAIN MENU, OR 'EXIT' TO LEAVE"
     puts
     answer = self.input
     if answer == "back"
       self.answer_parent
     elsif answer == 'main'
-      menu
+      self.menu
     elsif answer == 'exit'
       puts "GOODBYE"
       exit
@@ -289,7 +291,9 @@ def sorting_method_parent_1(saved_choice, beer_list)
       self.more_options
     end
   when "main"
-    menu
+    self.menu
+  when "back"
+    self.answer_parent
   else
     puts "GOODBYE"
     exit
@@ -300,7 +304,7 @@ def sorting_method_sub_style(saved_input, beer_list)
   puts "WOULD YOU LIKE TO FURTHER SORT?"
   puts "IF SO SELECT THE NUMBER THAT CORRESPONDS"
   puts "WITH YOUR SORTING METHOD OF CHOICE"
-  puts "OTHERWISE TYPE 'MAIN' TO RETURN TO THE MAIN MENU OR 'EXIT' TO LEAVE"
+  puts "OTHERWISE TYPE 'MAIN' TO RETURN TO THE MAIN MENU, 'BACK' TO RETURN TO THE LEAD SECTION, OR 'EXIT' TO LEAVE"
   puts "1. SORT BY ABV"
   puts "2. SORT BY TOTAL REVIEWS"
   answer = self.input
@@ -309,13 +313,13 @@ def sorting_method_sub_style(saved_input, beer_list)
     self.list_sub_style_abv(saved_input)
     puts
     puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
-    puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
+    puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION, 'MAIN' FOR THE MAIN MENU, OR 'EXIT' TO LEAVE"
     puts
     answer = self.input
     if answer == "back"
       self.answer_sub_styles
     elsif answer == 'main'
-      menu
+      self.menu
     elsif answer == 'exit'
       puts "GOODBYE"
       exit
@@ -328,13 +332,13 @@ def sorting_method_sub_style(saved_input, beer_list)
     self.list_sub_style_ratings(saved_input)
     puts
     puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
-    puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
+    puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION, 'MAIN' FOR THE MAIN MENU, OR 'EXIT' TO LEAVE"
     puts
     answer = self.input
     if answer == "back"
       self.answer_sub_styles
     elsif answer == 'main'
-      menu
+      self.menu
     elsif answer == 'exit'
       puts "GOODBYE"
       exit
@@ -344,7 +348,9 @@ def sorting_method_sub_style(saved_input, beer_list)
       self.more_options
     end
   when "main"
-    menu
+    self.menu
+  when "back"
+    self.answer_sub_styles
   else
     puts "GOODBYE"
     exit
@@ -355,7 +361,7 @@ end
     puts "WOULD YOU LIKE TO FURTHER SORT?"
     puts "IF SO SELECT THE NUMBER THAT CORRESPONDS"
     puts "WITH YOUR SORTING METHOD OF CHOICE"
-    puts "OTHERWISE TYPE 'MAIN' TO RETURN TO THE MAIN MENU OR 'EXIT' TO LEAVE"
+    puts "OTHERWISE TYPE 'MAIN' TO RETURN TO THE MAIN MENU, 'BACK' TO RETURN TO THE LEAD SECTION, OR 'EXIT' TO LEAVE"
     puts "1. SORT BY ABV"
     puts "2. SORT BY TOTAL REVIEWS"
     answer = self.input
@@ -364,13 +370,13 @@ end
       self.list_beer_abv(beer_list)
       puts
       puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
-      puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
+      puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION, 'MAIN' FOR THE MAIN MENU, OR 'EXIT' TO LEAVE"
       puts
       answer = self.input
       if answer == 'back'
         self.answer_beers
       elsif answer == 'main'
-        menu
+        self.menu
       elsif answer == 'exit'
         puts "GOODBYE"
         exit
@@ -383,13 +389,13 @@ end
       self.list_beer_ratings(beer_list)
       puts
       puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
-      puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION"
+      puts "OTHERWISE ENTER 'BACK' TO RETURN TO THE LEAD SECTION, 'MAIN' FOR THE MAIN MENU, OR 'EXIT' TO LEAVE"
       puts
       answer = self.input
       if answer == 'back'
         self.answer_beers
       elsif answer == 'main'
-        menu
+        self.menu
       elsif answer == 'exit'
         puts "GOODBYE"
         exit
@@ -399,7 +405,9 @@ end
         self.more_options
       end
     when "main"
-      menu
+      self.menu
+    when "back"
+      self.answer_beers
     else
       puts "GOODBYE"
       exit
@@ -511,11 +519,9 @@ end
 
    def get_sub_style_total(style_selections)
      beer_list = []
-     style_selections.each do |index|
-       counter = 1
-       puts "SELECTION #{counter}: #{SubStyle.all[index].name}"
-       beer_list << SubStyle.all[index].style_beers
-       counter += 1
+     style_selections.each_with_index do |value, index|
+       puts "SELECTION #{index + 1}: #{SubStyle.all[index].name}"
+       beer_list << SubStyle.all[value].style_beers
      end
      beer_list.flatten
    end
@@ -548,7 +554,7 @@ end
      puts "Description: #{choice.description}"
      puts
      list = choice.style_beers.sort_by {|beer| beer.ratings}.reverse
-     puts "SHOWING THE TOP 20 BEERS OF #{choice.name.upcase}'S SORTED BY TOTAL ratings"
+     puts "SHOWING THE TOP 20 BEERS OF #{choice.name.upcase}'S SORTED BY TOTAL RATINGS"
      self.ratings_list(list)
    end
 
@@ -557,7 +563,7 @@ end
     end
 
    def list_beer_score(beer_list)
-     puts "SHOWING THE TOP 20 BEERS IN THE WORLD SORTED BY BA-SCORE:"
+     puts "SHOWING THE TOP 20 BEERS FROM THIS LIST SORTED BY BA-SCORE:"
      beer_list.each_with_index do |beer, index|
       puts "#{index + 1}. #{beer.name}: #{beer.score}"
      end
@@ -565,13 +571,13 @@ end
 
    def list_beer_abv(beer_list)
      list = beer_list.sort_by {|beer| beer.abv}.reverse
-     puts "SHOWING THE TOP 20 BEERS IN THE WORLD SORTED BY ABV:"
+     puts "SHOWING THE TOP 20 BEERS FROM THIS LIST SORTED BY ABV:"
      self.abv_list(list)
    end
 
    def list_beer_ratings(beer_list)
      list = beer_list.sort_by {|beer| beer.ratings}.reverse
-     puts "SHOWING THE TOP 20 BEERS IN THE WORLD SORTED BY RATINGS:"
+     puts "SHOWING THE TOP 20 BEERS FROM THIS LIST SORTED BY RATINGS:"
      self.ratings_list(list)
    end
 
@@ -580,7 +586,7 @@ end
       puts "#{index + 1}. #{beer.name}: #{beer.score}"
      end
      puts
-     puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTED SUB-STYLE" if list.count < 10
+     puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTION" if list.count < 10
    end
 
    def abv_list(list)
@@ -588,7 +594,7 @@ end
        puts "#{index + 1}. #{beer.name}: #{beer.abv}%"
       end
       puts
-      puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTED SUB-STYLE" if list.count < 10
+      puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTION" if list.count < 10
    end
 
    def ratings_list(list)
@@ -596,7 +602,7 @@ end
        puts "#{index + 1}. #{beer.name}: #{beer.ratings}"
      end
      puts
-     puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTED SUB-STYLE" if list.count < 10
+     puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTION" if list.count < 10
    end
 
    def beer_info(beer_list, input)
