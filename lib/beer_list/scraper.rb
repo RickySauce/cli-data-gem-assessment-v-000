@@ -77,7 +77,7 @@ class Scraper
   def create_beers
     self.create_sub_styles
     beer_list = []
-    SubStyle.all.drop(99).each do |sub_style|
+    SubStyle.all.each do |sub_style|
       beer_list.clear
       doc = Nokogiri::HTML(open("https://www.beeradvocate.com#{sub_style.url}?sort=avgD"))
         if doc.css("div#ba-content").text.split("\n")[3] != "No description, yet."
