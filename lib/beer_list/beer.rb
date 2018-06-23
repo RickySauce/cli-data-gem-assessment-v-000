@@ -27,6 +27,7 @@ class Beer
     unless attr_hash.any? {|key, value| value == self.availability}
       attr_hash.each {|key, value| self.send(("#{key}="), value)}
       attr_hash.each {|key, value| self.attributes[key] = value}
+    end
   end
 
   def self.all
