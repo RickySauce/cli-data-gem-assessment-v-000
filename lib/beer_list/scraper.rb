@@ -82,6 +82,7 @@ class Scraper
       doc = Nokogiri::HTML(open("https://www.beeradvocate.com#{sub_style.url}?sort=avgD"))
         description = doc.css("div#ba-content").text.split("\n")[3].split("Description:")[1].split("Average")[0]
         sub_style.add_desc(description)
+        binding.pry
         beer_list = self.get_beer_hash(doc, beer_list, sub_style)
         page_counter = 50
         counter = 20

@@ -395,6 +395,8 @@ end
 
    def list_sub_style_score(answer)
     choice = SubStyle.all[answer.to_i - 1]
+    puts "Description: #{choice.description}"
+    puts
     list = choice.style_beers.sort_by {|beer| beer.score}.reverse
     puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY BA-SCORE"
     self.score_list(list)
@@ -402,6 +404,8 @@ end
 
    def list_sub_style_abv(answer)
      choice = SubStyle.all[answer.to_i - 1]
+     puts "Description: #{choice.description}"
+     puts
      list = choice.style_beers.sort_by {|beer| beer.abv}.reverse
      puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY ABV"
      self.abv_list(list)
@@ -409,6 +413,8 @@ end
 
    def list_sub_style_ratings(answer)
      choice = SubStyle.all[answer.to_i - 1]
+     puts "Description: #{choice.description}"
+     puts
      list = choice.style_beers.sort_by {|beer| beer.ratings}.reverse
      puts "SHOWING THE TOP 20 BEERS OF #{choice.name.upcase}'S SORTED BY TOTAL ratings"
      self.ratings_list(list)
@@ -469,6 +475,7 @@ end
      end
      puts "#{beer_list[index].name}"
      puts
+     beer_list[index].get_attrs
      beer_list[index].list_info
    end
 
