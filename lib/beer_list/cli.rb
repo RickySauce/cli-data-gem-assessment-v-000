@@ -7,8 +7,6 @@ class BeerList::CLI
   end
 
   def menu
-    answer = self.input
-    self.get_sub_style_selections(answer)
     puts "GREETINGS USER!"
     puts "BEER-LIST IS AN INTERACTIVE APP WHICH PULLS IT'S INFORMATION DIRECTLY"
     puts "FROM BEERADVOCATE.COM"
@@ -24,11 +22,11 @@ class BeerList::CLI
     answer = self.input
       case answer
       when "1"
-        answer_1
+        answer_beers
       when "2"
-        answer_2
+        answer_sub_styles
       when "3"
-        answer_3
+        answer_parent
       when "main"
         menu
       else
@@ -37,14 +35,14 @@ class BeerList::CLI
     end
   end
 
-  def answer_1
+  def answer_beers
     beer_list = self.top_beers
     self.list_beer_score(beer_list)
     puts
     self.sorting_method_beer(beer_list)
  end
 
- def answer_2
+ def answer_sub_styles
    answer = input
    puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH ONE OF THE FOLLOWING:"
    puts "1. CREATE A CUSTOM LIST OF TWO OR MORE SUB-STYLES"
@@ -77,7 +75,7 @@ class BeerList::CLI
    end
  end
 
-def answer_3
+def answer_parent
   self.list_parent_styles
   puts
   puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH THE STYLE OF CHOICE"
@@ -190,29 +188,11 @@ end
     when "1"
       self.list_beer_abv(beer_list)
       puts
-      puts "WOULD YOU LIKE TO SEE MORE LISTS?"
-      puts "ENTER 'MAIN' TO DO SO, OTHERWISE TYPE 'EXIT'"
-      answer = self.input
-      case answer
-      when "main"
-        menu
-      else
-        puts "GOODBYE"
-        exit
-      end
+      self.more_options
     when "2"
       self.list_beer_ratings(beer_list)
       puts
-      puts "WOULD YOU LIKE TO SEE MORE LISTS?"
-      puts "ENTER 'MAIN' TO DO SO, OTHERWISE TYPE 'EXIT'"
-      answer1 = self.input
-      case answer
-      when "main"
-        menu
-      else
-        puts "GOODBYE"
-        exit
-      end
+      self.more_options
     when "main"
       menu
     else
@@ -224,8 +204,8 @@ end
   def more_options
     puts "WOULD YOU LIKE TO SEE MORE LISTS?"
     puts "ENTER 'MAIN' TO DO SO, OTHERWISE TYPE 'EXIT'"
-    answer1 = self.input
-    case answer1
+    answer = self.input
+    case answer
     when "main"
       menu
     else
