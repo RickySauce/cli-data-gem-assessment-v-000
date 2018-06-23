@@ -64,7 +64,7 @@ class Scraper
     end
     beer_list
   end
-
+#-------------------------------------- DEF CREATE_BEER && HELPERS BELOW VVVVV ----------------------------------------------------
   def get_ratings_array(doc)
       ratings_array = []
       doc.css("tr td b").drop(3).each do |ratings|
@@ -105,7 +105,7 @@ class Scraper
     end
     Beer.all.each {|beer| beer.parent_style.beers << beer}
   end
-
+#-------------------------------------- END OF DEF CREATE_BEERS AND HELPERS ^^^^^^^^ ------------------------------------------------------
   #doc = Nokogiri::HTML(open("https://www.beeradvocate.com/beer/style/128/?sort=avgD&start=1000"))
 
 
