@@ -38,6 +38,7 @@ class BeerList::CLI
   def answer_beers
     beer_list = self.top_beers
     self.list_beer_score(beer_list)
+    puts
     puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
     puts "OTHERWISE ENTER 'MORE' FOR MORE OPTIONS"
     puts
@@ -46,6 +47,8 @@ class BeerList::CLI
       self.sorting_method_beer(beer_list)
     elsif
       self.beer_info(beer_list,answer)
+      puts
+      self.more_options
     end
  end
 
@@ -60,20 +63,41 @@ class BeerList::CLI
      self.list_sub_styles
      puts "PLEASE SELECT THE AMOUNT OF SUB-STYLES YOU WISH TO USE"
      puts
-     answer = input
+     answer = self.input
      beer_list = self.get_sub_style_selections(answer)
      beer_list = self.combination_top_beers(beer_list)
      self.list_beer_score(beer_list)
      puts
-     self.sorting_method_beer(beer_list)
+     puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
+     puts "OTHERWISE ENTER 'MORE' FOR MORE OPTIONS"
+     puts
+     answer = self.input
+     if answer == 'more'
+       self.sorting_method_beer(beer_list)
+     else
+       self.beer_info(beer_list, answer)
+       puts
+       self.more_options
+     end
    when "2"
      self.list_sub_styles
      puts
      puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH THE SUBSTYLE OF CHOICE"
      saved_input = input
+     beer_list = SubStyle.all[saved_input].style_beers
      self.list_sub_style_score(saved_input)
      puts
-     self.sorting_method_sub_style(saved_input)
+     puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
+     puts "OTHERWISE ENTER 'MORE' FOR MORE OPTIONS"
+     puts
+     answer = self.input
+     if answer == 'more'
+       self.sorting_method_sub_style(saved_input, beer_list)
+     else
+       self.beer_info(beer_list)
+       puts
+       self.more_options
+     end
    when "main"
      menu
    else
@@ -160,7 +184,7 @@ def sorting_method_parent(saved_choice, beer_list = nil, saved_input = nil)
   end
 end
 
-def sorting_method_sub_style(saved_input)
+def sorting_method_sub_style(saved_input, beer_list)
   puts "WOULD YOU LIKE TO FURTHER SORT?"
   puts "IF SO SELECT THE NUMBER THAT CORRESPONDS"
   puts "WITH YOUR SORTING METHOD OF CHOICE"
@@ -194,12 +218,32 @@ end
     case answer
     when "1"
       self.list_beer_abv(beer_list)
+      answer = self.input
       puts
-      self.more_options
+      puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
+      puts "OTHERWISE ENTER 'MORE' FOR MORE OPTIONS"
+      puts
+      if answer == 'more'
+        self.more_options
+      else
+        self.beer_info(beer_list, answer)
+        puts
+        self.more_options
+      end
     when "2"
       self.list_beer_ratings(beer_list)
+      answer = self.input
       puts
-      self.more_options
+      puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
+      puts "OTHERWISE ENTER 'MORE' FOR MORE OPTIONS"
+      puts
+      if answer == 'more'
+        self.more_options
+      else
+        self.beer_info(beer_list, answer)
+        puts
+        self.more_options
+      end
     when "main"
       menu
     else
@@ -396,7 +440,7 @@ end
    end
 
    def beer_info(beer_list, input)
-     if input.to_i < 1 || input.to_i > 19
+     if input.to_i < 1 || input.to_i > 20
         index = 0
      else
        index = input.to_i - 1
