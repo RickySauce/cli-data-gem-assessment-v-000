@@ -1,12 +1,13 @@
 
 
 class Beer
-  attr_accessor :name, :sub_style, :parent_style, :region, :availability, :abv, :url, :score, :ratings, :brewery, :description
+  attr_accessor :name, :sub_style, :parent_style, :region, :availability, :abv, :url, :score, :ratings, :brewery, :description, :attributes
   @@all = []
 
   def initialize(beer_hash)
     beer_hash.each {|key, value| self.send(("#{key}="), value)}
     @@all << self
+    @attributes = beer_hash
   end
 
   def add_attrs(attr_hash)
@@ -17,4 +18,7 @@ class Beer
     @@all
   end
 
+  def list_info
+    @attributes.each {|key, value| if key != :name puts "#{key.gsub(":","")}: #{value}"}
+  end
 end

@@ -38,8 +38,15 @@ class BeerList::CLI
   def answer_beers
     beer_list = self.top_beers
     self.list_beer_score(beer_list)
+    puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
+    puts "OTHERWISE ENTER 'MORE' FOR MORE OPTIONS"
     puts
-    self.sorting_method_beer(beer_list)
+    answer = self.input
+    if answer == 'more'
+      self.sorting_method_beer(beer_list)
+    elsif
+      self.beer_info(beer_list,answer)
+    end
  end
 
  def answer_sub_styles
@@ -307,7 +314,10 @@ end
    def get_sub_style_total(style_selections)
      beer_list = []
      style_selections.each do |index|
+       counter = 1
+       puts "SELECTION #{counter}: #{SubStyle.all[index].name}"
        beer_list << SubStyle.all[index].style_beers
+       counter += 1
      end
      beer_list.flatten
    end
@@ -383,6 +393,17 @@ end
      end
      puts
      puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTED SUB-STYLE" if list.count < 10
+   end
+
+   def beer_info(beer_list, input)
+     if input.to_i < 1 || input.to_i > 19
+        index = 0
+     else
+       index = input.to_i - 1
+     end
+     puts "#{beer_list[index].name}"
+     puts
+     beer_list[index].list_info
    end
 
 end
