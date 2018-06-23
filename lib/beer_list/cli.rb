@@ -61,24 +61,47 @@ class BeerList::CLI
  end
 
  def answer_2
-   self.list_sub_styles
-   puts
-   puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH THE SUBSTYLE OF CHOICE"
-   saved_input = input
-   self.list_sub_style_score(saved_input)
-   puts
-   self.sorting_method
-   puts
-   answer = self.input
+   answer = input
+   puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH ONE OF THE FOLLOWING:"
+   puts "1. CREATE A CUSTOM LIST OF TWO OR MORE SUB-STYLES"
+   puts "2. CREATE A LIST FROM A SINGLE SUB-STYLE"
+   puts "ELSE, ENTER 'EXIT' TO LEAVE OR 'MAIN' FOR THE MAIN MENU"
    case answer
    when "1"
-     self.list_sub_style_abv(saved_input)
+     self.list_sub_styles
+     puts "PLEASE SELECT THE AMOUNT OF SUB-STYLES YOU WISH TO USE"
      puts
-     self.more_options
+     answer = input
+     beer_list = self.get_sub_style_selections(answer)
+     beer_list = self.combination_top_beers(beer_list)
+     self.list_beer_score(beer_list)
+
+
    when "2"
-     self.list_sub_style_ratings(saved_input)
+     self.list_sub_styles
      puts
-     self.more_options
+     puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH THE SUBSTYLE OF CHOICE"
+     saved_input = input
+     self.list_sub_style_score(saved_input)
+     puts
+     self.sorting_method
+     puts
+     answer_lv2 = self.input
+     case answer_lv2
+     when "1"
+       self.list_sub_style_abv(saved_input)
+       puts
+       self.more_options
+     when "2"
+       self.list_sub_style_ratings(saved_input)
+       puts
+       self.more_options
+     when "main"
+       menu
+     else
+       puts "GOODBYE"
+       exit
+     end
    when "main"
      menu
    else
@@ -155,6 +178,16 @@ end
     puts "OTHERWISE TYPE 'MAIN' TO RETURN TO THE MAIN MENU OR 'EXIT' TO LEAVE"
     puts "1. SORT BY ABV"
     puts "2. SORT BY TOTAL REVIEWS"
+    answer = input
+    case answer
+    when "1"
+    when "2"
+    when "main"
+      menu
+    else
+      puts "GOODBYE"
+      exit
+    end
   end
 
   def more_options
@@ -198,17 +231,13 @@ end
    def list_parent_style_beer_abv(beer_list, choice)
      list = beer_list.sort_by {|beer| beer.abv}.reverse
      puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY ABV"
-     beer_list.each_with_index do |beer, index|
-       puts "#{index +1}. #{beer.name}: #{beer.abv}%"
-     end
+     self.abv_list(list)
    end
 
    def list_parent_style_beer_ratings(beer_list, choice)
      list = beer_list.sort_by {|beer| beer.ratings}.reverse
      puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY RATINGS"
-     list.each_with_index do |beer, index|
-       puts "#{index +1}. #{beer.name}: #{beer.ratings}"
-     end
+     self.ratings_list(list)
    end
 
    def list_parent_style_sub_styles(choice)
@@ -222,27 +251,21 @@ end
      choice = parent_choice.sub_styles[answer.to_i - 1]
      list = choice.style_beers.sort_by {|beer| beer.score}.reverse
       puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY BA-SCORE"
-     list.each_with_index do |beer, index|
-       puts "#{index + 1}. #{beer.name}: #{beer.score}"
-     end
+     self.score_list(list)
    end
 
    def list_parent_sub_style_abv(answer, parent_choice)
      choice = parent_choice.sub_styles[answer.to_i - 1]
      list = choice.style_beers.sort_by {|beer| beer.abv}.reverse
      puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY ABV"
-     list.each_with_index do |beer, index|
-       puts "#{index + 1}. #{beer.name}: #{beer.abv}%"
-     end
+     self.abv_list(list)
    end
 
    def list_parent_sub_style_ratings(answer, parent_choice)
      choice = parent_choice.sub_styles[answer.to_i - 1]
      list = choice.style_beers.sort_by {|beer| beer.ratings}.reverse
      puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY ratings"
-     list.each_with_index do |beer, index|
-       puts "#{index + 1}. #{beer.name}: #{beer.ratings}"
-     end
+     self.ratings_list(list)
    end
 
    def list_sub_styles
@@ -252,6 +275,7 @@ end
    end
 
    def get_sub_style_selections(answer)
+     puts "YOU WILL NOW BE ALLOWED TO CHOOSE YOUR SELECTIONS FROM THE MENU ABOVE"
      count = answer.to_i
      count_array = Array.new(count,"")
      style_selections = []
@@ -265,7 +289,19 @@ end
        style_selections << input.to_i - 1
        count -= 1
      end
-     style_selections
+     self.get_sub_style_total(style_selections)
+   end
+
+   def get_sub_style_total(style_selections)
+     beer_list = []
+     style_selections.each do |index|
+       beer_list << SubStyle.all[index].style_beers
+     end
+     beer_list.flatten
+   end
+
+   def combination_top_beers(beer_list)
+     beer_list.sort_by {|beer| beer.score}.reverse[0..19]
    end
 
 
@@ -273,33 +309,21 @@ end
     choice = SubStyle.all[answer.to_i - 1]
     list = choice.style_beers.sort_by {|beer| beer.score}.reverse
     puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY BA-SCORE"
-    list.each_with_index do |beer, index|
-      puts "#{index + 1}. #{beer.name}: #{beer.score}"
-    end
-    puts ""
-    puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTED SUB-STYLE" if list.count < 10
+    self.score_list(list)
    end
 
    def list_sub_style_abv(answer)
      choice = SubStyle.all[answer.to_i - 1]
      list = choice.style_beers.sort_by {|beer| beer.abv}.reverse
      puts "SHOWING ALL #{choice.name.upcase}'S SORTED BY ABV"
-     list.each_with_index do |beer, index|
-       puts "#{index + 1}. #{beer.name}: #{beer.abv}%"
-     end
-     puts
-     puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTED SUB-STYLE" if list.count < 10
+     self.abv_list(list)
    end
 
    def list_sub_style_ratings(answer)
      choice = SubStyle.all[answer.to_i - 1]
      list = choice.style_beers.sort_by {|beer| beer.ratings}.reverse
      puts "SHOWING THE TOP 20 BEERS OF #{choice.name.upcase}'S SORTED BY TOTAL ratings"
-     list.each_with_index do |beer, index|
-       puts "#{index + 1}. #{beer.name}: #{beer.ratings}"
-     end
-     puts
-     puts "SORRY. LIMITED INFORMATION FOR YOUR SELECTED SUB-STYLE" if list.count < 10
+     self.ratings_list(list)
    end
 
     def top_beers
@@ -314,19 +338,15 @@ end
    end
 
    def list_beer_abv(beer_list)
-    list = beer_list.sort_by {|beer| beer.abv}.reverse
+     list = beer_list.sort_by {|beer| beer.abv}.reverse
      puts "SHOWING THE TOP 20 BEERS IN THE WORLD SORTED BY ABV:"
-    list.each_with_index do |beer, index|
-      puts "#{index + 1}. #{beer.name}: #{beer.abv}%"
-     end
+     self.abv_list(list)
    end
 
    def list_beer_ratings(beer_list)
      list = beer_list.sort_by {|beer| beer.ratings}.reverse
      puts "SHOWING THE TOP 20 BEERS IN THE WORLD SORTED BY RATINGS:"
-    list.each_with_index do |beer, index|
-      puts "#{index + 1}. #{beer.name}: #{beer.ratings}"
-     end
+     self.ratings_list(list)
    end
 
    def score_list(list)
