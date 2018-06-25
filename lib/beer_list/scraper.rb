@@ -44,7 +44,7 @@ class Scraper
       style_hash[:parent_style].sub_styles << SubStyle.new(style_hash) unless SubStyle.all.any? {|sub_style| sub_style.name == style_hash[:name]}
     end
   end
-
+#-------------------------------------- DEF CREATE_BEER && HELPERS BELOW VVVVV ----------------------------------------------------
   def get_beer_hash(doc, beer_list, sub_style)
     beer_list
     doc.css("tr").drop(3).each do |info|
@@ -64,7 +64,7 @@ class Scraper
     end
     beer_list
   end
-#-------------------------------------- DEF CREATE_BEER && HELPERS BELOW VVVVV ----------------------------------------------------
+
   def get_ratings_array(doc)
       ratings_array = []
       doc.css("tr td b").drop(3).each do |ratings|

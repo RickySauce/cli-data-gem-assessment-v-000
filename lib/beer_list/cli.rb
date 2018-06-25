@@ -27,9 +27,11 @@ class BeerList::CLI
         self.answer_sub_styles
       when "3"
         self.answer_parent
-      else
+      when "exit"
         puts "GOODBYE"
         exit
+      else
+        menu
     end
   end
 
@@ -114,11 +116,11 @@ class BeerList::CLI
        puts
        self.more_options
      end
-   when "main"
-     self.menu
-   else
+   when "exit"
      puts "GOODBYE"
      exit
+   else
+    self.menu
    end
  end
 
@@ -127,6 +129,7 @@ def answer_parent
   puts
   puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH THE STYLE OF CHOICE"
   saved_choice = parent_choice(input)
+  saved_choice = parent_choice(1) if saved_choice == nil
   puts
   puts "PLEASE ENTER THE NUMBER THAT CORRESPONDS WITH THE ONE OF THE OPTIONS"
   puts "1. LIST TOP BEERS OF THE SELECTED PARENT STYLE"
@@ -159,6 +162,7 @@ def answer_parent
     puts
     puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH THE SUB-STYLE OF CHOICE"
     saved_input = input
+    saved_input = 1 if saved_choice.sub_styles[saved_input.to_i - 1]
     puts
     beer_list = saved_choice.sub_styles[saved_input.to_i - 1].style_beers
     self.list_parent_sub_style_score(saved_input, saved_choice)
@@ -179,11 +183,11 @@ def answer_parent
       puts
       self.more_options
     end
-  when "main"
-    self.menu
-  else
+  when "exit"
     puts "GOODBYE"
     exit
+  else
+    self.menu
   end
 end
 
@@ -236,13 +240,13 @@ def sorting_method_parent_2(saved_choice, beer_list, saved_input)
         puts
         self.more_options
       end
-    when "main"
-      self.menu
+    when "exit"
+      puts "GOODBYE"
+      exit
     when "back"
       self.answer_parent
     else
-      puts "GOODBYE"
-      exit
+      self.menu
     end
 end
 
@@ -293,13 +297,13 @@ def sorting_method_parent_1(saved_choice, beer_list)
       puts
       self.more_options
     end
-  when "main"
-    self.menu
+  when "exit"
+    puts "GOODBYE"
+    exit
   when "back"
     self.answer_parent
   else
-    puts "GOODBYE"
-    exit
+    self.menu
   end
 end
 
@@ -350,13 +354,13 @@ def sorting_method_sub_style(saved_input, beer_list)
       puts
       self.more_options
     end
-  when "main"
-    self.menu
+  when "exit"
+    puts "GOODBYE"
+    exit
   when "back"
     self.answer_sub_styles
   else
-    puts "GOODBYE"
-    exit
+    self.menu
   end
 end
 
@@ -407,13 +411,13 @@ end
         puts
         self.more_options
       end
-    when "main"
-      self.menu
+    when "exit"
+      puts "GOODBYE"
+      exit
     when "back"
       self.answer_beers
     else
-      puts "GOODBYE"
-      exit
+      self.menu
     end
   end
 
@@ -422,11 +426,11 @@ end
     puts "ENTER 'MAIN' TO DO SO, OTHERWISE TYPE 'EXIT'"
     answer = self.input
     case answer
-    when "main"
-      menu
-    else
+    when "exit"
       puts "GOODBYE"
       exit
+    else
+      self.menu
     end
   end
 
