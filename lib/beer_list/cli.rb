@@ -504,17 +504,17 @@ end
    def get_sub_style_selections(answer)
      puts "YOU WILL NOW BE ALLOWED TO CHOOSE YOUR SELECTIONS FROM THE MENU ABOVE"
      count = answer.to_i
-     count = 1 if answer.to_i > 100
+     count = 1 if count > 100 || count < 1
      count_array = Array.new(count,"")
      style_selections = []
      count_array.each do |selection|
-        puts "YOU HAVE #{count} SELECTIONS REMAINING"
-       input = gets.strip
-       while input.to_i < 1 || SubStyle.all[input.to_i] == nil
+        puts "YOU HAVE #{count} SELECTION(S) REMAINING"
+       input = gets.strip.to_i
+       while SubStyle.all[input] == nil
          puts "PLEASE SELECT ANOTHER NUMBER. MAKE SURE THAT NUMBER CORRESPONDS WITH AN EXISTING SUB-STYLE"
          input = gets.strip
        end
-       style_selections << input.to_i - 1
+       style_selections << input - 1
        count -= 1
      end
      self.get_sub_style_total(style_selections.uniq)
@@ -523,7 +523,7 @@ end
    def get_sub_style_total(style_selections)
      beer_list = []
      style_selections.each_with_index do |value, index|
-       puts "SELECTION #{index + 1}: #{SubStyle.all[index].name}"
+       puts "SELECTION #{index + 1}: #{SubStyle.all[value].name}"
        beer_list << SubStyle.all[value].style_beers
      end
      beer_list.flatten
