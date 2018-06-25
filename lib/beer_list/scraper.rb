@@ -49,14 +49,14 @@ class Scraper
     beer_list
     doc.css("tr").drop(3).each do |info|
       unless info.css("td a b").text == ""
-        ratings = info.css("td b").collect {|child| child.text.gsub(",","") if child == info.css("td b")[1]}.reject! {|item| item == nil}.join.to_i
+        ratings = info.css("td b").collect {|child| child.text.gsub(",","") if child == info.css("td b")[1]}.join.to_i
           if ratings > 99
             beer_list << {
               :name => info.css("td a b").text,
               :url => info.css("td a").attribute('href').value,
               :parent_style => sub_style.parent_style,
               :ratings => ratings,
-              :score => info.css("td b").collect {|child| child.text if child == info.css("td b")[2]}.reject! {|text| text == nil}.join.to_f,
+              :score => info.css("td b").collect {|child| child.text if child == info.css("td b")[2]}.join.to_f,
               :abv => info.css("td span").text.to_f
               }
             end
