@@ -95,7 +95,6 @@ class BeerList::CLI
      puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH THE SUBSTYLE OF CHOICE"
      saved_input = input.to_i
      saved_input = 1 if SubStyle.all[saved_input - 1].nil?
-     binding.pry
      beer_list = SubStyle.all[saved_input - 1].style_beers
      self.list_sub_style_score(saved_input)
      puts
@@ -514,7 +513,6 @@ end
         puts "YOU HAVE #{count} SELECTION(S) REMAINING"
        input = gets.strip.to_i
        while SubStyle.all[input] == nil || input.negative?
-         binding.pry
          puts "PLEASE SELECT ANOTHER NUMBER. MAKE SURE THAT NUMBER CORRESPONDS WITH AN EXISTING SUB-STYLE"
          input = gets.strip.to_i
        end

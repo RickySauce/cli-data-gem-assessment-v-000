@@ -55,6 +55,7 @@ class Scraper
               :name => info.css("td a b").text,
               :url => info.css("td a").attribute('href').value,
               :parent_style => sub_style.parent_style,
+              :sub_style => sub_style,
               :ratings => ratings,
               :score => info.css("td b").collect {|child| child.text if child == info.css("td b")[2]}.join.to_f,
               :abv => info.css("td span").text.to_f

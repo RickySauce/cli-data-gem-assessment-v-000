@@ -36,9 +36,11 @@ class Beer
 
   def list_info
     self.attributes.each do |key, value|
-      if value == self.parent_style
+      if value == self.parent_style || value == self.sub_style
         new_key = "#{key}".gsub("_", " ")
         puts "#{new_key.upcase}: #{value.name}"
+      elsif value == self.abv
+        puts "#{key.upcase}: #{value} %"
       else
         puts "#{key.upcase}: #{value}" unless value == self.name || value == self.url
       end
