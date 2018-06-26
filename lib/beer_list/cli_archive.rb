@@ -93,10 +93,11 @@ class BeerList::CLI
      self.list_sub_styles
      puts
      puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH THE SUBSTYLE OF CHOICE"
-     saved_input = input.to_i
-     saved_input = 1 if SubStyle.all[saved_input - 1].nil?
-     binding.pry
-     beer_list = SubStyle.all[saved_input - 1].style_beers
+     saved_input = input
+     if SubStyle.all[saved_input.to_i - 1] == nil
+       saved_input = 1
+     end
+     beer_list = SubStyle.all[saved_input.to_i - 1].style_beers
      self.list_sub_style_score(saved_input)
      puts
      puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
@@ -160,10 +161,10 @@ def answer_parent
     self.list_parent_style_sub_styles(saved_choice)
     puts
     puts "PLEASE SELECT THE NUMBER THAT CORRESPONDS WITH THE SUB-STYLE OF CHOICE"
-    saved_input = input.to_i
-    saved_input = 1 if saved_choice.sub_styles[saved_input - 1].nil?
+    saved_input = input
+    saved_input = 1 if saved_choice.sub_styles[saved_input.to_i - 1]
     puts
-    beer_list = saved_choice.sub_styles[saved_input - 1].style_beers
+    beer_list = saved_choice.sub_styles[saved_input.to_i - 1].style_beers
     self.list_parent_sub_style_score(saved_input, saved_choice)
     puts
     puts "SELECT A NUMBER THAT CORRESPONDS WITH THE BEER OF CHOICE FOR MORE INFO"
@@ -589,7 +590,7 @@ end
    end
 
    def score_list(list)
-     list.each_with_index do |beer, index|
+     beer_list.each_with_index do |beer, index|
       puts "#{index + 1}. #{beer.name}: #{beer.score}"
      end
      puts
